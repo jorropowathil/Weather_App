@@ -1,5 +1,20 @@
-#sidebar {
+/* #sidebar {
     position: fixed;
-    
-   
+} */
+
+#header {
+    text-align: center;
+    background-color: cornflowerblue;
+}
+
+#random {
+    display: inline-block;
+}
+
+.column_1{
+    border:solid black;
+}
+
+.card{
+    display: inline-flexbox;
 }
