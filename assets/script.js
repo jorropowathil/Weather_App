@@ -9,11 +9,17 @@ var oneCallAddition = '&lon=';
 var oneCallEnd= '&exclude=hourly,alerts&units=imperial'
 
 
-
+// Top Card
 var unorderList_currentCity = document.createElement("LI");
 var unorderList_currentTem = document.createElement("LI");
 var unorderList_currentWind = document.createElement("LI");
 var unorderList_currentHumidity = document.createElement("LI");
+var unorderList_currentUVI = document.createElement("LI");
+
+// Bottom Cards
+var listForecastTemp= document.createElement("LI");
+var listForecastWind= document.createElement("LI");
+var listForecastHumidity= document.createElement("LI");
 
 
 // API KEY Var & Search variables
@@ -31,11 +37,8 @@ formBtn.addEventListener('click', function() {
     event.preventDefault();
     var citySearch = document.getElementById("formGroupExampleInput").value;
     console.log (citySearch)
-    var searchedFor= document.querySelector('.searchedFor').value;
     var apiCitySearch= coordinateUrlStart + citySearch + apiKey;
-
-  
-    
+    // First API Here
     fetch(apiCitySearch, {})
     .then (function(response){
         return response.json()
@@ -82,16 +85,43 @@ formBtn.addEventListener('click', function() {
         console.log(data)
         // UV Index Stuff
         console.log(data.current.uvi)
-        var unorderList_currentUVI = document.createElement("LI");
+        
         var currentUVI= (data.current.uvi)
         document.getElementById("topList").appendChild(unorderList_currentUVI);
         unorderList_currentUVI.innerHTML = "UV Index: " + currentUVI;
         // Five day Forecast
         // Temperature
-        for (let i = 1; i < 6; i++) {
-            var forecastTemp= (data.daily[i].temp.day);
-            console.log(forecastTemp)
-        }
+        // for (let i = 1; i < 6; i++) {
+        //     var forecastTemp= (data.daily[i].temp.day);
+        //     document.getElementById("bottomList1").appendChild(listForecastTemp);
+        //     listForecastTemp.innerHTML = (data.daily[i].temp.day);
+        // }
+        // Temp Test WTF IS GOING ON HERE, WHY NO WORK 
+        // Temp Day Variable 
+        var day1ForecastTemp= (data.daily[1].temp.day);
+        var day2ForecastTemp= (data.daily[2].temp.day);
+        var day3ForecastTemp= (data.daily[3].temp.day);
+        var day4ForecastTemp= (data.daily[4].temp.day);
+        var day5ForecastTemp= (data.daily[5].temp.day);
+        console.log ("Temp: " + day1ForecastTemp)
+        console.log ("Temp: " + day2ForecastTemp)
+        console.log ("Temp: " + day3ForecastTemp)
+        console.log ("Temp: " + day4ForecastTemp)
+        console.log ("Temp: " + day5ForecastTemp)
+
+        document.getElementById("bottomList1").appendChild(listForecastTemp);
+        listForecastTemp.innerHTML = day1ForecastTemp;
+
+
+        // Day 2
+        document.getElementById("bottomList2").appendChild(listForecastTemp);
+        listForecastTemp.innerHTML = (data.daily[2].temp.day);
+        // // Day 3
+        document.getElementById("bottomList3").appendChild(listForecastTemp);
+        listForecastTemp.innerHTML = "Temp: " + (data.daily[3].temp.day);
+        
+
+
         // Wind
         for (let i = 1; i < 6; i++) {
             var forecastWind= (data.daily[i].wind_speed);
@@ -102,27 +132,9 @@ formBtn.addEventListener('click', function() {
             var forecastHumidity= (data.daily[i].humidity);
             console.log(forecastHumidity)
         }
-        
+
     })
         
     })
     
 })
-
-
-
-
-
-function getUV(coord) {
-    lat = coord.coord.lat.toString();
-    lon = coord.coord.lon.toString();
-    var apiOneCallSearch= oneCallFirst+ oneCallLat + oneCallAddition +oneCallLong + apiKey;
-    fetch(apiOneCallSearch, {})
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            console.log(data)
-        })
-    }
-console.log (getUV)
