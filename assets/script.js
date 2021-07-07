@@ -7,7 +7,8 @@ var coordinateUrlStart = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallFirst = 'https://api.openweathermap.org/data/2.5/onecall?lat=';
 var oneCallAddition = '&lon=';
 var oneCallEnd= '&exclude=hourly,alerts&units=imperial';
-var citySearch = 'glenview'; 
+var citySearch = 'glenview'
+// document.querySelector('.formGroupExampleInput');
 //document.getElementById("formGroupExampleInput");
 
 // Top Card
@@ -61,21 +62,25 @@ function getWeather(){
         return response.json();
     })
     .then (function(data){
-        // City Stuff
-        document.getElementById("topList").appendChild(unorderList_currentCity);
-        unorderList_currentCity.innerHTML = data.name + "," + moment().format(" MMM Do, YY");
-        // Temp Stuff
-        document.getElementById("topList").appendChild(unorderList_currentTem);
-        unorderList_currentTem.innerHTML = "Temperature: " + Math.round((data.main.temp  - 273.15) * 9/5 + 32) * 1 + " F";
-        // Wind Stuff
-        document.getElementById("topList").appendChild(unorderList_currentWind);
-        unorderList_currentWind.innerHTML = "Wind Speed: " + data.wind.speed + " mph";
-        // Humidity
-        document.getElementById("topList").appendChild(unorderList_currentHumidity);
-        unorderList_currentHumidity.innerHTML = "Humidity: " + data.main.humidity + " %";
-        apiOneCallSearch = oneCallFirst+ data.coord.lat + oneCallAddition + data.coord.lon + oneCallEnd + apiKey;
-        getOneSearch(data);
+        topCard(data);
     })
+}
+
+function topCard (data){
+    // City Stuff
+    document.getElementById("topList").appendChild(unorderList_currentCity);
+    unorderList_currentCity.innerHTML = data.name + "," + moment().format(" MMM Do, YY");
+    // Temp Stuff
+    document.getElementById("topList").appendChild(unorderList_currentTem);
+    unorderList_currentTem.innerHTML = "Temperature: " + Math.round((data.main.temp  - 273.15) * 9/5 + 32) * 1 + " F";
+    // Wind Stuff
+    document.getElementById("topList").appendChild(unorderList_currentWind);
+    unorderList_currentWind.innerHTML = "Wind Speed: " + data.wind.speed + " mph";
+    // Humidity
+    document.getElementById("topList").appendChild(unorderList_currentHumidity);
+    unorderList_currentHumidity.innerHTML = "Humidity: " + data.main.humidity + " %";
+    apiOneCallSearch = oneCallFirst+ data.coord.lat + oneCallAddition + data.coord.lon + oneCallEnd + apiKey;
+    getOneSearch(data);
 }
 
 function getOneSearch (data){
