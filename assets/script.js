@@ -6,8 +6,8 @@ var form= document.querySelector('.form-control');
 var coordinateUrlStart = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallFirst = 'https://api.openweathermap.org/data/2.5/onecall?lat=';
 var oneCallAddition = '&lon=';
-var oneCallEnd= '&exclude=hourly,alerts&units=imperial'
-
+var oneCallEnd= '&exclude=hourly,alerts&units=imperial';
+var citySearch = 'glenview'; //document.getElementById("formGroupExampleInput");
 
 // Top Card
 var unorderList_currentCity = document.createElement("LI");
@@ -16,125 +16,152 @@ var unorderList_currentWind = document.createElement("LI");
 var unorderList_currentHumidity = document.createElement("LI");
 var unorderList_currentUVI = document.createElement("LI");
 
-// Bottom Cards
-var listForecastTemp= document.createElement("LI");
-var listForecastWind= document.createElement("LI");
-var listForecastHumidity= document.createElement("LI");
-
-
 // API KEY Var & Search variables
 var apiKey= '&appid=7f3ae1b6bcf96fd759ef4aacda6a20d5';
-
+// One Call API
+var apiOneCallSearch; 
 
 // Forecast
+// Dates
+var day1Date= document.querySelector(".day1Date");
+var day2Date= document.querySelector(".day2Date");
+var day3Date= document.querySelector(".day3Date");
+var day4Date= document.querySelector(".day4Date");
+var day5Date= document.querySelector(".day5Date");
+// Temp
 var day1Temp= document.querySelector(".day1Temp");
-// day1Temp.textcontent= "Temp: " + 
-// Resource: 
-
+var day2Temp= document.querySelector(".day2Temp");
+var day3Temp= document.querySelector(".day3Temp");
+var day4Temp= document.querySelector(".day4Temp");
+var day5Temp= document.querySelector(".day5Temp");
+// Wind
+var day1Wind= document.querySelector(".day1Wind");
+var day2Wind= document.querySelector(".day2Wind");
+var day3Wind= document.querySelector(".day3Wind");
+var day4Wind= document.querySelector(".day4Wind");
+var day5Wind= document.querySelector(".day5Wind");
+// Humidity
+var day1Humidity= document.querySelector(".day1Humidity");
+var day2Humidity= document.querySelector(".day2Humidity");
+var day3Humidity= document.querySelector(".day3Humidity");
+var day4Humidity= document.querySelector(".day4Humidity");
+var day5Humidity= document.querySelector(".day5Humidity");
 
 // Event listener button
-formBtn.addEventListener('click', function() {
+formBtn.addEventListener('click', function(event) {
     event.preventDefault();
-    var citySearch = document.getElementById("formGroupExampleInput").value;
-    console.log (citySearch)
     var apiCitySearch= coordinateUrlStart + citySearch + apiKey;
     // First API Here
     fetch(apiCitySearch, {})
     .then (function(response){
-        return response.json()
+        return response.json();
     })
     .then (function(data) {
         // City Stuff
-        var currentCity= (data.name);
         document.getElementById("topList").appendChild(unorderList_currentCity);
-        unorderList_currentCity.innerHTML = currentCity + "," + moment().format(" MMM Do, YY");
+        unorderList_currentCity.innerHTML = data.name + "," + moment().format(" MMM Do, YY");
         // Temp Stuff
-        var currentTemp =(data.main.temp);
         document.getElementById("topList").appendChild(unorderList_currentTem);
-        unorderList_currentTem.innerHTML = "Temperature: " + Math.round((currentTemp  - 273.15) * 9/5 + 32) * 1 + " F";
+        unorderList_currentTem.innerHTML = "Temperature: " + Math.round((data.main.temp  - 273.15) * 9/5 + 32) * 1 + " F";
 
         // Wind Stuff
-        var currentWindSpeed= (data.wind.speed)
         document.getElementById("topList").appendChild(unorderList_currentWind);
-        unorderList_currentWind.innerHTML = "Wind Speed: " + currentWindSpeed + " mph";
+        unorderList_currentWind.innerHTML = "Wind Speed: " + data.wind.speed + " mph";
 
         // Humidity
-        var currentHumidityPercent= (data.main.humidity)
         document.getElementById("topList").appendChild(unorderList_currentHumidity);
-        unorderList_currentHumidity.innerHTML = "Humidity: " + currentHumidityPercent + " %";
-
-        console.log(apiCitySearch)
-        console.log(data)
-        console.log(data.name)
-        console.log(data.main.temp)
-        console.log(data.wind.speed)
-        console.log(data.main.humidity)
-        console.log(data.coord.lat)
-        console.log(data.coord.lon)
-
-        // One Call API
-          // Onecall (test)
-    var apiOneCallSearch= oneCallFirst+ data.coord.lat + oneCallAddition + data.coord.lon + oneCallEnd + apiKey;
-    console.log(apiOneCallSearch)
-
-    fetch(apiOneCallSearch, {})
-    .then (function(response){
-        return response.json()
-    })
-    .then (function(data) {
-        console.log(data)
-        // UV Index Stuff
-        console.log(data.current.uvi)
-        
-        var currentUVI= (data.current.uvi)
-        document.getElementById("topList").appendChild(unorderList_currentUVI);
-        unorderList_currentUVI.innerHTML = "UV Index: " + currentUVI;
-        // Five day Forecast
-        // Temperature
-        // for (let i = 1; i < 6; i++) {
-        //     var forecastTemp= (data.daily[i].temp.day);
-        //     document.getElementById("bottomList1").appendChild(listForecastTemp);
-        //     listForecastTemp.innerHTML = (data.daily[i].temp.day);
-        // }
-        // Temp Test WTF IS GOING ON HERE, WHY NO WORK 
-        // Temp Day Variable 
-        var day1ForecastTemp= (data.daily[1].temp.day);
-        var day2ForecastTemp= (data.daily[2].temp.day);
-        var day3ForecastTemp= (data.daily[3].temp.day);
-        var day4ForecastTemp= (data.daily[4].temp.day);
-        var day5ForecastTemp= (data.daily[5].temp.day);
-        console.log ("Temp: " + day1ForecastTemp)
-        console.log ("Temp: " + day2ForecastTemp)
-        console.log ("Temp: " + day3ForecastTemp)
-        console.log ("Temp: " + day4ForecastTemp)
-        console.log ("Temp: " + day5ForecastTemp)
-
-        document.getElementById("bottomList1").appendChild(listForecastTemp);
-        listForecastTemp.innerHTML = day1ForecastTemp;
-
-
-        // Day 2
-        document.getElementById("bottomList2").appendChild(listForecastTemp);
-        listForecastTemp.innerHTML = (data.daily[2].temp.day);
-        // // Day 3
-        document.getElementById("bottomList3").appendChild(listForecastTemp);
-        listForecastTemp.innerHTML = "Temp: " + (data.daily[3].temp.day);
-        
-
-
-        // Wind
-        for (let i = 1; i < 6; i++) {
-            var forecastWind= (data.daily[i].wind_speed);
-            console.log(forecastWind)
-        }
-        // Humidity
-        for (let i = 1; i < 6; i++) {
-            var forecastHumidity= (data.daily[i].humidity);
-            console.log(forecastHumidity)
-        }
-
-    })
-        
+        unorderList_currentHumidity.innerHTML = "Humidity: " + data.main.humidity + " %";
     })
     
-})
+    fetch(apiOneCallSearch, {})
+    .then (function(response){
+        return response.json();
+    })
+    .then (function(data) {
+        console.log(data);
+        getForecast(data);
+        document.getElementById("topList").appendChild(unorderList_currentUVI);
+        unorderList_currentUVI.innerHTML = "UV Index: " + data.current.uvi;
+    });
+});
+
+function getForecast(data) {
+    // Dates
+        day1Date.textContent = moment().add(1, 'days').format('MMM Do');
+        day2Date.textContent = moment().add(2, 'days').format('MMM Do');
+        day3Date.textContent = moment().add(3, 'days').format('MMM Do');
+        day4Date.textContent = moment().add(4, 'days').format('MMM Do');
+        day5Date.textContent = moment().add(5, 'days').format('MMM Do');
+
+    // Temp Forecast
+        var day1ForecastTemp= (data.daily[0].temp.day);
+        var day2ForecastTemp= (data.daily[1].temp.day);
+        var day3ForecastTemp= (data.daily[2].temp.day);
+        var day4ForecastTemp= (data.daily[3].temp.day);
+        var day5ForecastTemp= (data.daily[4].temp.day);
+        day1Temp.textContent = 'Temp: ' + day1ForecastTemp;
+        day2Temp.textContent = 'Temp: ' + day2ForecastTemp;
+        day3Temp.textContent = 'Temp: ' + day3ForecastTemp;
+        day4Temp.textContent = 'Temp: ' + day4ForecastTemp;
+        day5Temp.textContent = 'Temp: ' + day5ForecastTemp;
+
+        // Wind Forecast
+        var day1forecastWind= (data.daily[0].wind_speed);
+        var day2forecastWind= (data.daily[1].wind_speed);
+        var day3forecastWind= (data.daily[2].wind_speed);
+        var day4forecastWind= (data.daily[3].wind_speed);
+        var day5forecastWind= (data.daily[4].wind_speed);
+        day1Wind.textContent = 'Wind Speed: ' + day1forecastWind + ' mph';
+        day2Wind.textContent = 'Wind Speed: ' + day2forecastWind + ' mph';
+        day3Wind.textContent = 'Wind Speed: ' + day3forecastWind + ' mph';
+        day4Wind.textContent = 'Wind Speed: ' + day4forecastWind + ' mph';
+        day5Wind.textContent = 'Wind Speed: ' + day5forecastWind + ' mph';
+
+        // Humidity Forecast
+        var day1ForecastHumidity= (data.daily[0].wind_speed);
+        var day2ForecastHumidity= (data.daily[1].wind_speed);
+        var day3ForecastHumidity= (data.daily[2].wind_speed);
+        var day4ForecastHumidity= (data.daily[3].wind_speed);
+        var day5ForecastHumidity= (data.daily[4].wind_speed);
+        day1Humidity.textContent = ' Humidity: ' + day1ForecastHumidity + '%';
+        day2Humidity.textContent = ' Humidity: ' + day2ForecastHumidity + '%';
+        day3Humidity.textContent = ' Humidity: ' + day3ForecastHumidity + '%';
+        day4Humidity.textContent = ' Humidity: ' + day4ForecastHumidity + '%';
+        day5Humidity.textContent = ' Humidity: ' + day5ForecastHumidity + '%';
+}
+
+function getWeather(){
+    var apiCitySearch= coordinateUrlStart + citySearch + apiKey;
+    fetch(apiCitySearch, {})
+    .then (function(response){
+        return response.json();
+    })
+    .then (function(data){
+        // City Stuff
+        document.getElementById("topList").appendChild(unorderList_currentCity);
+        unorderList_currentCity.innerHTML = data.name + "," + moment().format(" MMM Do, YY");
+        // Temp Stuff
+        document.getElementById("topList").appendChild(unorderList_currentTem);
+        unorderList_currentTem.innerHTML = "Temperature: " + Math.round((data.main.temp  - 273.15) * 9/5 + 32) * 1 + " F";
+        // Wind Stuff
+        document.getElementById("topList").appendChild(unorderList_currentWind);
+        unorderList_currentWind.innerHTML = "Wind Speed: " + data.wind.speed + " mph";
+        // Humidity
+        document.getElementById("topList").appendChild(unorderList_currentHumidity);
+        unorderList_currentHumidity.innerHTML = "Humidity: " + data.main.humidity + " %";
+        getOneSearch(data);
+    })
+    apiOneCallSearch = oneCallFirst+ data.coord.lat + oneCallAddition + data.coord.lon + oneCallEnd + apiKey;
+}
+
+function getOneSearch (data){
+    fetch (apiOneCallSearch, {})
+    .then (function(response){
+        return response.json();
+    })
+    .then (function(data){
+        document.getElementById("topList").appendChild(unorderList_currentUVI);
+        unorderList_currentUVI.innerHTML = "UV Index: " + data.current.uvi;
+        getForecast(data);
+    })
+}
