@@ -7,7 +7,7 @@ var coordinateUrlStart = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallFirst = 'https://api.openweathermap.org/data/2.5/onecall?lat=';
 var oneCallAddition = '&lon=';
 var oneCallEnd= '&exclude=hourly,alerts&units=imperial';
-var citySearch = 'glenview'
+var citySearch;
 // document.querySelector('.formGroupExampleInput');
 //document.getElementById("formGroupExampleInput");
 
@@ -56,6 +56,7 @@ formBtn.addEventListener('click', function(event) {
 });
 
 function getWeather(){
+    citySearch = document.querySelector('#formGroupExampleInput').value;
     var apiCitySearch= coordinateUrlStart + citySearch + apiKey;
     fetch(apiCitySearch, {})
     .then (function(response){
