@@ -1,19 +1,15 @@
-/* #sidebar {
-    position: fixed;
-} */
 
 #header {
     text-align: center;
     background-color: cornflowerblue;
 }
 
-#random {
-    display: inline-block;
-}
-
 .column_1{
     border:solid black;
 }
 
-
-
+#cardContainer{
+    justify-content: space-evenly;
+    display: flex;
+    flex-wrap: wrap;
+}

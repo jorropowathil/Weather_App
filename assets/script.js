@@ -7,7 +7,8 @@ var coordinateUrlStart = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallFirst = 'https://api.openweathermap.org/data/2.5/onecall?lat=';
 var oneCallAddition = '&lon=';
 var oneCallEnd= '&exclude=hourly,alerts&units=imperial';
-var citySearch = 'glenview'; //document.getElementById("formGroupExampleInput");
+var citySearch = 'glenview'; 
+//document.getElementById("formGroupExampleInput");
 
 // Top Card
 var unorderList_currentCity = document.createElement("LI");
@@ -50,40 +51,44 @@ var day5Humidity= document.querySelector(".day5Humidity");
 // Event listener button
 formBtn.addEventListener('click', function(event) {
     event.preventDefault();
+    getWeather();
+});
+
+function getWeather(){
     var apiCitySearch= coordinateUrlStart + citySearch + apiKey;
-    // First API Here
     fetch(apiCitySearch, {})
     .then (function(response){
         return response.json();
     })
-    .then (function(data) {
+    .then (function(data){
         // City Stuff
         document.getElementById("topList").appendChild(unorderList_currentCity);
         unorderList_currentCity.innerHTML = data.name + "," + moment().format(" MMM Do, YY");
         // Temp Stuff
         document.getElementById("topList").appendChild(unorderList_currentTem);
         unorderList_currentTem.innerHTML = "Temperature: " + Math.round((data.main.temp  - 273.15) * 9/5 + 32) * 1 + " F";
-
         // Wind Stuff
         document.getElementById("topList").appendChild(unorderList_currentWind);
         unorderList_currentWind.innerHTML = "Wind Speed: " + data.wind.speed + " mph";
-
         // Humidity
         document.getElementById("topList").appendChild(unorderList_currentHumidity);
         unorderList_currentHumidity.innerHTML = "Humidity: " + data.main.humidity + " %";
+        apiOneCallSearch = oneCallFirst+ data.coord.lat + oneCallAddition + data.coord.lon + oneCallEnd + apiKey;
+        getOneSearch(data);
     })
-    
-    fetch(apiOneCallSearch, {})
+}
+
+function getOneSearch (data){
+    fetch (apiOneCallSearch, {})
     .then (function(response){
         return response.json();
     })
-    .then (function(data) {
-        console.log(data);
-        getForecast(data);
+    .then (function(data){
         document.getElementById("topList").appendChild(unorderList_currentUVI);
         unorderList_currentUVI.innerHTML = "UV Index: " + data.current.uvi;
-    });
-});
+        getForecast(data);
+    })
+}
 
 function getForecast(data) {
     // Dates
@@ -128,40 +133,4 @@ function getForecast(data) {
         day3Humidity.textContent = ' Humidity: ' + day3ForecastHumidity + '%';
         day4Humidity.textContent = ' Humidity: ' + day4ForecastHumidity + '%';
         day5Humidity.textContent = ' Humidity: ' + day5ForecastHumidity + '%';
-}
-
-function getWeather(){
-    var apiCitySearch= coordinateUrlStart + citySearch + apiKey;
-    fetch(apiCitySearch, {})
-    .then (function(response){
-        return response.json();
-    })
-    .then (function(data){
-        // City Stuff
-        document.getElementById("topList").appendChild(unorderList_currentCity);
-        unorderList_currentCity.innerHTML = data.name + "," + moment().format(" MMM Do, YY");
-        // Temp Stuff
-        document.getElementById("topList").appendChild(unorderList_currentTem);
-        unorderList_currentTem.innerHTML = "Temperature: " + Math.round((data.main.temp  - 273.15) * 9/5 + 32) * 1 + " F";
-        // Wind Stuff
-        document.getElementById("topList").appendChild(unorderList_currentWind);
-        unorderList_currentWind.innerHTML = "Wind Speed: " + data.wind.speed + " mph";
-        // Humidity
-        document.getElementById("topList").appendChild(unorderList_currentHumidity);
-        unorderList_currentHumidity.innerHTML = "Humidity: " + data.main.humidity + " %";
-        getOneSearch(data);
-    })
-    apiOneCallSearch = oneCallFirst+ data.coord.lat + oneCallAddition + data.coord.lon + oneCallEnd + apiKey;
-}
-
-function getOneSearch (data){
-    fetch (apiOneCallSearch, {})
-    .then (function(response){
-        return response.json();
-    })
-    .then (function(data){
-        document.getElementById("topList").appendChild(unorderList_currentUVI);
-        unorderList_currentUVI.innerHTML = "UV Index: " + data.current.uvi;
-        getForecast(data);
-    })
 }
