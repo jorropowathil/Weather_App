@@ -1,11 +1,5 @@
-
 #header {
     text-align: center;
-    background-color: cornflowerblue;
-}
-
-.column_1{
-    border:solid black;
 }
 
 #cardContainer{
@@ -14,6 +8,26 @@
     flex-wrap: wrap;
 }
 
-.container{
-    background-color: coral;
+
+#masterContainer{
+    margin: auto;
+    width: 100%;
+    padding: 100px;
+}
+
+#topList{
+    text-align: center;
+    background-color: white;
+    text-decoration: none;
+}
+.form{
+   text-align: center;
+}
+
+.col1{
+    background-color: rgb(126, 176, 250);
+}
+
+.col2{
+    background-color: rgba(69, 231, 218, 0.911)
 }
